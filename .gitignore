@@ -1,0 +1,4 @@
+Makefile
+build/
+*.xcodeproj/*.pbxuser
+*.xcodeproj/*.perspectivev3
