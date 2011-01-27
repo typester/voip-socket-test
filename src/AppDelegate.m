@@ -1,27 +1,14 @@
-//
-//  iptestAppDelegate.m
-//  iptest
-//
-//  Created by Daisuke Murase on 11/01/27.
-//  Copyright 2011 KAYAC Inc. All rights reserved.
-//
+#import "AppDelegate.h"
 
-#import "iptestAppDelegate.h"
-
-@implementation iptestAppDelegate
-
-@synthesize window;
-
+@implementation AppDelegate
 
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-    [self.window makeKeyAndVisible];
-    
+    [window makeKeyAndVisible];
+
     return YES;
 }
 
@@ -73,11 +60,9 @@
      */
 }
 
-
 - (void)dealloc {
     [window release];
     [super dealloc];
 }
-
 
 @end
