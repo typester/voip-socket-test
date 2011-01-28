@@ -7,29 +7,30 @@
 #define PORT htons(4423)
 
 static AppDelegate* app;
-static NSInputStream* read_stream;
+static NSInputStream* read_stream = nil;
 
 @interface AppDelegate (Private)
 -(void)setup_watcher;
+-(void)close_watcher;
 -(void)reset_watcher;
 @end
 
 void err_handler(stream_client_t* client, int code, const char* msg) {
     fprintf(stderr, "network error: %d %s\n", code, msg);
+    [app close_watcher];
 
-    // reconnect! XXX
-    stream_client_connect(client, HOST, PORT);
-
-    [app reset_watcher];
+//    // reconnect! XXX
+    if (SC_CONNECTING != client->state) {
+        stream_client_connect(client, HOST, PORT);
+    }
 }
 
 void eof_handler(stream_client_t* client, int code, const char* msg) {
     fprintf(stderr, "eof error: %d %s\n", code, msg);
+    [app close_watcher];
 
-    // reconnect! XXX
+//    // reconnect! XXX
     stream_client_connect(client, HOST, PORT);
-
-    [app reset_watcher];
 }
 
 void read_handler(stream_client_t* client, const char* buf, int len) {
@@ -43,6 +44,10 @@ void read_handler(stream_client_t* client, const char* buf, int len) {
                                                         userInfo:info];
         [[NSNotificationCenter defaultCenter] postNotification:n];
     });
+}
+
+void connect_handler(stream_client_t* client) {
+    [app setup_watcher];
 }
 
 @implementation AppDelegate
@@ -62,15 +67,14 @@ static stream_client_t* client;
     client->error_callback = (void*)err_handler;
     client->eof_callback   = (void*)eof_handler;
     client->read_callback  = (void*)read_handler;
+    client->connect_callback = (void*)connect_handler;
 
     stream_client_connect(client, HOST, PORT);
     assert(0 != client->fd);
 
-    [self setup_watcher];
-
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        ev_run(ev_default_loop(0), 0);
-        LOG(@"end loop");
+            while (1)
+                ev_run(ev_default_loop(0), 0);
     });
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -172,7 +176,8 @@ static stream_client_t* client;
 #pragma mark stream
 
 -(void)setup_watcher {
-    read_stream = nil;
+    assert(nil == read_stream);
+    assert(0 != client->fd);
 
     CFStreamCreatePairWithSocket(
         kCFAllocatorDefault, client->fd,
@@ -182,25 +187,24 @@ static stream_client_t* client;
     [read_stream setProperty:NSStreamNetworkServiceTypeVoIP
                       forKey:NSStreamNetworkServiceType];
 
-    //[read_stream setDelegate:self];
     [read_stream scheduleInRunLoop:[NSRunLoop currentRunLoop]
                            forMode:NSDefaultRunLoopMode];
     [[read_stream retain] open];
 }
 
--(void)reset_watcher {
-    [read_stream close];
-    [read_stream removeFromRunLoop:[NSRunLoop currentRunLoop]
-                           forMode:NSDefaultRunLoopMode];
-    [read_stream release];
-    read_stream = nil;
-
-    [self setup_watcher];
+-(void)close_watcher {
+    if (nil != read_stream) {
+        [read_stream close];
+        [read_stream removeFromRunLoop:[NSRunLoop currentRunLoop]
+                               forMode:NSDefaultRunLoopMode];
+        [read_stream release];
+        read_stream = nil;
+    }
 }
 
--(void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
-    LOG_CURRENT_METHOD;
-    //[self reset_watcher];
+-(void)reset_watcher {
+    [self close_watcher];
+    [self setup_watcher];
 }
 
 @end

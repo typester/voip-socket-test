@@ -30,12 +30,15 @@ static void setup_sock(int fd) {
 
 static void change_state(stream_client_t* client, stream_client_state_t state) {
     struct ev_loop* loop = EV_DEFAULT;
+    stream_client_connect_callback_f f = client->connect_callback;
 
     switch (state) {
         case SC_CONNECTED: {
             fprintf(stderr, "connect success\n");
             ev_io_init(&(client->ev_read), read_callback, client->fd, EV_READ);
             ev_io_start(EV_A_ &(client->ev_read));
+
+            if (NULL != f) f(client);
             break;
         }
         default:
