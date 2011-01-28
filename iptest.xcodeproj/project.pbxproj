@@ -17,6 +17,8 @@
 		A039BE8B12F141F3003A8610 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A039BE8712F141F3003A8610 /* RootViewController.m */; };
 		A039BE8C12F141F3003A8610 /* TableBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A039BE8912F141F3003A8610 /* TableBaseViewController.m */; };
 		A039BE8E12F1420D003A8610 /* RootView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A039BE8D12F1420D003A8610 /* RootView.xib */; };
+		A039BE9A12F147CB003A8610 /* libev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A039BE9912F147CB003A8610 /* libev.a */; };
+		A0A6631112F1547300D4127D /* stream_client.c in Sources */ = {isa = PBXBuildFile; fileRef = A0A6630F12F1547300D4127D /* stream_client.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,9 @@
 		A039BE8812F141F3003A8610 /* TableBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableBaseViewController.h; path = src/TableBaseViewController.h; sourceTree = "<group>"; };
 		A039BE8912F141F3003A8610 /* TableBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableBaseViewController.m; path = src/TableBaseViewController.m; sourceTree = "<group>"; };
 		A039BE8D12F1420D003A8610 /* RootView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RootView.xib; path = resources/RootView.xib; sourceTree = "<group>"; };
+		A039BE9912F147CB003A8610 /* libev.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libev.a; sourceTree = "<absolute>"; };
+		A0A6630F12F1547300D4127D /* stream_client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = stream_client.c; path = src/stream_client.c; sourceTree = "<group>"; };
+		A0A6631012F1547300D4127D /* stream_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stream_client.h; path = src/stream_client.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +52,7 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
+				A039BE9A12F147CB003A8610 /* libev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +84,7 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
+				A039BE9912F147CB003A8610 /* libev.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -85,6 +92,8 @@
 		A039BE5D12F14059003A8610 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				A0A6630F12F1547300D4127D /* stream_client.c */,
+				A0A6631012F1547300D4127D /* stream_client.h */,
 				A039BE8412F141F3003A8610 /* BaseViewController.h */,
 				A039BE8512F141F3003A8610 /* BaseViewController.m */,
 				A039BE8612F141F3003A8610 /* RootViewController.h */,
@@ -175,6 +184,7 @@
 				A039BE8A12F141F3003A8610 /* BaseViewController.m in Sources */,
 				A039BE8B12F141F3003A8610 /* RootViewController.m in Sources */,
 				A039BE8C12F141F3003A8610 /* TableBaseViewController.m in Sources */,
+				A0A6631112F1547300D4127D /* stream_client.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,8 +201,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				HEADER_SEARCH_PATHS = "$(HOME)/dev/iphone/lib/libev/include";
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				LIBRARY_SEARCH_PATHS = "$(HOME)/dev/iphone/lib/libev/lib";
 				PRODUCT_NAME = iptest;
 			};
 			name = Debug;
@@ -204,8 +216,10 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = "$(HOME)/dev/iphone/lib/libev/include";
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				LIBRARY_SEARCH_PATHS = "$(HOME)/dev/iphone/lib/libev/lib";
 				PRODUCT_NAME = iptest;
 				VALIDATE_PRODUCT = YES;
 			};

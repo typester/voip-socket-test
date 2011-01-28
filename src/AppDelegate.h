@@ -1,6 +1,6 @@
-#import <UIKit/UIKit.h>
+#import "common.h"
 
-@interface AppDelegate : NSObject <UIApplicationDelegate> {
+@interface AppDelegate : NSObject <UIApplicationDelegate, NSStreamDelegate> {
     IBOutlet UIWindow *window;
 }
 
